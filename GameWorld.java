@@ -5,6 +5,7 @@ package com.egs.gameworld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+import com.egs.gameobjects.Ball;
 
 /**
  *
@@ -12,19 +13,19 @@ import com.badlogic.gdx.math.Rectangle;
  */
 public class GameWorld {
 
-    //Kilobolt
-
-    private Rectangle rect = new Rectangle(0, 0, 17, 12);
-
-    public void update(float delta) {
-        Gdx.app.log("GameWorld", "update");
-        rect.x++;
-        if (rect.x > 137) {
-            rect.x = 0;
-        }
+    private Ball ball;
+    /**
+     * 
+     */
+     public GameWorld() {
+        ball = new Ball();
     }
-
-    public Rectangle getRect() {
-        return rect;
+    
+    public void update(float delta) {
+        ball.update();
+    }
+    
+    public Ball getBall(){
+        return ball;
     }
 }
