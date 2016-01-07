@@ -4,6 +4,7 @@
 package com.egs.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -13,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Ball {
 
     public static TextureRegion ball;
+    private Circle hitbox;
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration;
@@ -26,9 +28,10 @@ public class Ball {
     public Ball(){
         height = 16;
         width = 16;
-        position = new Vector2(200,200);
+        position = new Vector2(0,0);
         velocity = new Vector2(0,0);
         acceleration = new Vector2(0,0);
+        hitbox = new Circle();
         
     }
     /**
@@ -43,6 +46,9 @@ public class Ball {
             velocity.x = 150;
         }
         position.add(velocity.cpy());
+        
+        //Could cause error might have to make position x and position y methods
+        hitbox.setPosition(position);
     }
     /**
      * onClick it will do something
@@ -52,10 +58,18 @@ public class Ball {
     }
     /**
      * gets the current position of the ball object
-     * @return the x y position 
+     * @return the x position 
      */
-    public Vector2 getPosition(){
-        return position;
+    
+    public float getX(){
+        return position.x;
+    }
+    /**
+     * gets the current position of the ball
+     * @return y position
+     */
+    public float getY(){
+        return position.y;
     }
     /**
      * gets the velocity of the ball
@@ -70,6 +84,10 @@ public class Ball {
      */
     public Vector2 getAccel(){
         return acceleration;
+    }
+    
+    public Circle getHitbox(){
+        return hitbox;
     }
     /**
      * sets the position of the ball
