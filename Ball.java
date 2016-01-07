@@ -3,6 +3,7 @@
  */
 package com.egs.gameobjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -39,6 +40,23 @@ public class Ball {
      */
     public void update(){
         velocity.sub(acceleration.cpy());
+        if(velocity.y<0){
+            acceleration.y = (float)-.1;
+        }else{
+            acceleration.y = (float).1;
+        }
+        if(velocity.x<0){
+            acceleration.x = (float).1;
+        }else{
+            acceleration.x = (float)-.1;
+        }
+        
+        if(velocity.y==0){
+            acceleration.y = 0;
+        }
+        if(velocity.x==0){
+            acceleration.x = 0;
+        }
         if(velocity.y > 150){
             velocity.y = 150;
         }
@@ -54,7 +72,13 @@ public class Ball {
      * onClick it will do something
      */
     public void onClick(){
-        velocity = new Vector2(0,0);
+        double vX = Gdx.input.getX()*.1;
+        double vY = Gdx.input.getY()*.1;
+        
+        
+        velocity.x = (float)vX;
+        velocity.y = (float)vY;
+        
     }
     /**
      * gets the current position of the ball object
@@ -116,3 +140,4 @@ public class Ball {
     
     
 }
+
