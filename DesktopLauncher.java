@@ -1,3 +1,6 @@
+/**
+ * Daniel Ross
+ */
 package com.egs.eddiegolfsim.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -10,8 +13,9 @@ public class DesktopLauncher {
         //gotten from kilobolt
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "Eddie's Golf Simulator";
-        config.width = 272;
-        config.height = 408;
+        config.width = 1024;
+        config.height = 512;
         new LwjglApplication(new Golf(), config);
     }
 }
+
