@@ -11,9 +11,10 @@ import com.badlogic.gdx.math.Vector2;
 /**
  *
  * @author Daniel
- */
+ */ 
 public class Ball {
-
+    boolean right, down;
+    
     public static TextureRegion ball;
     private Circle hitbox;
     private Vector2 position;
@@ -39,30 +40,42 @@ public class Ball {
      * Update method to update position and velocities
      */
     public void update(){
-        velocity.sub(acceleration.cpy());
-        if(velocity.y<0){
-            acceleration.y = (float)-.1;
+        boolean go = false;
+        if(velocity.x > 0 && right == true){
+            go = true;
+            acceleration.x = (float)-.02;
+        }else if(velocity.x < 0 && right == false){
+            go = true;
+            acceleration.x = (float).02;
         }else{
-            acceleration.y = (float).1;
-        }
-        if(velocity.x<0){
-            acceleration.x = (float).1;
-        }else{
-            acceleration.x = (float)-.1;
-        }
-        
-        if(velocity.y==0){
-            acceleration.y = 0;
-        }
-        if(velocity.x==0){
             acceleration.x = 0;
         }
-        if(velocity.y > 150){
-            velocity.y = 150;
+        if(velocity.y > 0 && down == true){
+            go = true;
+            acceleration.y = (float)-.02;
+        }else if(velocity.y < 0 && down == false){
+            go = true;
+            acceleration.y = (float).02;
+        }else{
+            acceleration.y = 0;
         }
-        if(velocity.x > 150){
-            velocity.x = 150;
+    
+        //Change the velocity 
+        if(go == true){
+        velocity.add(acceleration.cpy());
         }
+        //Cap the speed of the ball
+        if(velocity.y > 5){
+            velocity.y = 5;
+        }else if(velocity.y < -5){
+            velocity.y = -5;
+        }
+        if(velocity.x > 5){
+            velocity.x = 5;
+        }else if(velocity.x < -5){
+            velocity.x = -5;
+        }
+        //Add to the position
         position.add(velocity.cpy());
         
         //Could cause error might have to make position x and position y methods
@@ -71,10 +84,25 @@ public class Ball {
     /**
      * onClick it will do something
      */
-    public void onClick(){
-        double vX = Gdx.input.getX()*.1;
-        double vY = Gdx.input.getY()*.1;
+    public void onClick(int screenX, int screenY){        
+        double vX;
+        double vY;
         
+        if(position.x < screenX){
+            right = true;
+             vX = screenX*.01;
+        }else{
+            right = false;
+            vX = screenX*-.01;
+        }
+        
+        if(position.y < screenY){
+            down = true;
+            vY = screenY*.015;
+        }else{
+            down = false;
+            vY = screenY*-.015;
+        }
         
         velocity.x = (float)vX;
         velocity.y = (float)vY;
@@ -140,4 +168,3 @@ public class Ball {
     
     
 }
-
