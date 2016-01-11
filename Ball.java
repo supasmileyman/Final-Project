@@ -40,7 +40,9 @@ public class Ball {
      * Update method to update position and velocities
      */
     public void update(){
+      //  System.out.println(position);
         boolean go = false;
+        
         if(velocity.x > 0 && right == true){
             go = true;
             acceleration.x = (float)-.02;
@@ -76,7 +78,11 @@ public class Ball {
             velocity.x = -5;
         }
         //Add to the position
-        position.add(velocity.cpy());
+        if(right = true){
+            position.add(velocity.cpy());
+        }else{
+            position.sub(velocity.cpy());
+        }
         
         //Could cause error might have to make position x and position y methods
         hitbox.setPosition(position);
@@ -84,29 +90,35 @@ public class Ball {
     /**
      * onClick it will do something
      */
-    public void onClick(int screenX, int screenY){        
+    public void onClick(){        
         double vX;
         double vY;
-        
-        if(position.x < screenX){
+        System.out.println("Pos: " + position);
+        System.out.println("Mouse X" + Gdx.input.getX());
+         System.out.println("Mouse Y" + Gdx.input.getY());
+        //if the mouse is to the right of the ball send it right else send it left
+        if(position.x < Gdx.input.getX()){
             right = true;
-             vX = screenX*.01;
+             vX = (Gdx.input.getX()*.01) - position.x;
+             System.out.println("fdsfds");
         }else{
             right = false;
-            vX = screenX*-.01;
+            vX = (Gdx.input.getX()*.01) -  position.x;
+            System.out.println("Hi");
         }
         
-        if(position.y < screenY){
+        //If the ball is below the mouse send it down else send it up
+        if(position.y < Gdx.input.getY()){
             down = true;
-            vY = screenY*.015;
+            vY = (Gdx.input.getY()*.02) - position.y;
         }else{
             down = false;
-            vY = screenY*-.015;
+            vY = (position.y) - Gdx.input.getY()*.02;
         }
-        
+        //Set the velocities 
         velocity.x = (float)vX;
         velocity.y = (float)vY;
-        
+        System.out.println("Velocity" + velocity);
     }
     /**
      * gets the current position of the ball object
@@ -137,34 +149,4 @@ public class Ball {
     public Vector2 getAccel(){
         return acceleration;
     }
-    
-    public Circle getHitbox(){
-        return hitbox;
-    }
-    /**
-     * sets the position of the ball
-     * @param x x position
-     * @param y  y position 
-     */
-    public void setPosition(int x, int y){
-        position = new Vector2(x,y);
-    }
-    /**
-     * sets the velocity of the ball
-     * @param x x position 
-     * @param y y position
-     */
-    public void setVelocity(int x, int y){
-        velocity = new Vector2(x,y);
-    }
-    /**
-     * sets the acceleration of the ball
-     * @param x x position 
-     * @param y y position
-     */
-    public void setAccel(int x, int y){
-        acceleration = new Vector2(x,y);
-    }
-    
-    
 }
