@@ -14,9 +14,9 @@ import java.io.*;
  */
 public abstract class Score {
 
-    public String[] scores = new String[5];
+    public static String[] scores = new String[6];
     
-    public static String setHighScore(int score) {
+    public static void setHighScore(int score) {
         boolean lmtchar = false;
         boolean illchar = false;
         boolean cmplte = false;
@@ -63,10 +63,13 @@ public abstract class Score {
             output = "" + score;
         }else if (score < 0 || score > 999) {
             output = "" + 0;
-            return "Error score";
+            JOptionPane.showMessageDialog(null, "Illegal score! Score reset.");
         }
         output += " " + name.toUpperCase();
-        return output;
+        
+        scores[5] = output;
+        int[] numScore = new int[6];
+        sortScores(numScore, 0, numScore.length);
     }
     
     public static void sortScores(int[] a, int l, int h) {
@@ -99,11 +102,32 @@ public abstract class Score {
         a[c] = t;
     }
     
-    public static int getHighScore() {
-        return pref.getInteger("highScore");
+    public static String getHighScore() {
+        return scores[0];
     }
     
-    public static int getScore(String name) {
-        
+    public static String getScore(String searchName) {
+        String name = "";
+        for (int i = 0; i > 5; i++) {
+            name = scores[i].substring(4);
+            if (name.equalsIgnoreCase(searchName)) {
+                return scores[i];
+            }
+        }
+        return "Error: Name Not Found";
+    }
+    
+    public static String getScoreByNum(int value) {
+        if (value > 4) {
+            return "Error: Search Score Out Of Index";
+        }else if (value > -1 || value < 5) {
+            return scores[value];
+        }else {
+            return "Error: Search Score Out Of Index";
+        }
+    }
+    
+    public static String[] getAllScores() {
+        return scores;
     }
 }
