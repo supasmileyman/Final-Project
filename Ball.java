@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector2;
  * @author Daniel
  */ 
 public class Ball {
-    boolean right, down;
+    boolean right, down, go;
     
     public static TextureRegion ball;
     private Circle hitbox;
@@ -40,52 +40,61 @@ public class Ball {
      * Update method to update position and velocities
      */
     public void update(){
-      //  System.out.println(position);
-        boolean go = false;
-        
-        if(velocity.x > 0 && right == true){
-            go = true;
-            acceleration.x = (float)-.02;
-        }else if(velocity.x < 0 && right == false){
-            go = true;
-            acceleration.x = (float).02;
+        //If go is true then go to the nested ifs
+        if(go == true){
+            //If right is true and the speed is higher than 0.02 accelerate the ball on the x
+            if(right == true && velocity.x > 0.02){
+                acceleration.x = (float)-0.02;
+            }else if(right == false && velocity.x > 0.02){
+                acceleration.x = (float) -0.02;
+            }else{
+                //else round it off and stop its acceleration
+                Math.floor(velocity.x);
+                acceleration.x = 0;
+            }
+            //If down is true and hte speed is higher than 0.02 accelerate the ball on the y
+            if(down == true && velocity.y > 0.02){
+                acceleration.y = (float)-0.02;
+            }else if(down == false && velocity.y > 0.02){
+                acceleration.y = (float) -0.02;
+            }else{
+                Math.floor(velocity.y);
+                acceleration.y = 0;
+            }
         }else{
-            acceleration.x = 0;
-        }
-        if(velocity.y > 0 && down == true){
-            go = true;
-            acceleration.y = (float)-.02;
-        }else if(velocity.y < 0 && down == false){
-            go = true;
-            acceleration.y = (float).02;
-        }else{
-            acceleration.y = 0;
+            go = false;
         }
     
         //Change the velocity 
-        if(go == true){
         velocity.add(acceleration.cpy());
-        }
+        
         //Cap the speed of the ball
-        if(velocity.y > 5){
-            velocity.y = 5;
-        }else if(velocity.y < -5){
-            velocity.y = -5;
+        if(velocity.y > 4){
+            velocity.y = 4;
+        }else if(velocity.y < -4){
+            velocity.y = -4;
         }
-        if(velocity.x > 5){
-            velocity.x = 5;
-        }else if(velocity.x < -5){
-            velocity.x = -5;
+        if(velocity.x > 4){
+            velocity.x = 4;
+        }else if(velocity.x < -4){
+            velocity.x = -4;
         }
         //Add to the position
-        if(right = true){
-            position.add(velocity.cpy());
+        if(right == true){
+            position.x += velocity.x;
         }else{
-            position.sub(velocity.cpy());
+            position.x -=velocity.x;
+        }
+        
+        if(down == true){
+            position.y += velocity.y;
+        }else{
+            position.y -= velocity.y;
         }
         
         //Could cause error might have to make position x and position y methods
         hitbox.setPosition(position);
+        System.out.println(velocity);
     }
     /**
      * onClick it will do something
@@ -93,38 +102,35 @@ public class Ball {
     public void onClick(){        
         double vX;
         double vY;
-        System.out.println("Pos: " + position);
-        System.out.println("Mouse X" + Gdx.input.getX());
-         System.out.println("Mouse Y" + Gdx.input.getY());
-        //if the mouse is to the right of the ball send it right else send it left
-        if(position.x < Gdx.input.getX()){
+        go = true;
+        //Calculate the velocity of the ball
+         vX = (Gdx.input.getX() - position.x)* 0.025;
+         vY = (Gdx.input.getY() - position.y) *0.015;
+        
+         //if the mouse is to the right of the ball send it right else send it left
+         if(position.x < Gdx.input.getX()){
             right = true;
-             vX = (Gdx.input.getX()*.01) - position.x;
-             System.out.println("fdsfds");
         }else{
             right = false;
-            vX = (Gdx.input.getX()*.01) -  position.x;
-            System.out.println("Hi");
+            vX = vX*-1;
         }
         
-        //If the ball is below the mouse send it down else send it up
+        //If the mouse is below the ball send it down else send it up
         if(position.y < Gdx.input.getY()){
             down = true;
-            vY = (Gdx.input.getY()*.02) - position.y;
         }else{
             down = false;
-            vY = (position.y) - Gdx.input.getY()*.02;
+            vY = vY*-1;
         }
         //Set the velocities 
         velocity.x = (float)vX;
         velocity.y = (float)vY;
-        System.out.println("Velocity" + velocity);
+       
     }
     /**
      * gets the current position of the ball object
      * @return the x position 
      */
-    
     public float getX(){
         return position.x;
     }
@@ -135,18 +141,14 @@ public class Ball {
     public float getY(){
         return position.y;
     }
-    /**
-     * gets the velocity of the ball
-     * @return x and y components of the velocity
-     */
-    public Vector2 getVelocity(){
-        return velocity;
+    
+    public float getVelocityX(){
+        return velocity.x;
     }
-    /**
-     * gets the acceleration of the ball
-     * @return the acceleration 
-     */
-    public Vector2 getAccel(){
-        return acceleration;
+    
+    public float getVelocityY(){
+        return velocity.y;
     }
+    
 }
+    
