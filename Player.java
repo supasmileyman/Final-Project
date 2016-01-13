@@ -8,13 +8,14 @@ package com.egs.player;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
 /**
  *
  * @author jiluo5947
  */
 public abstract class Score {
 
-    public static String[] scores = new String[6];
+    public static ArrayList<String> scores;
     
     public static void setHighScore(int score) {
         boolean lmtchar = false;
@@ -67,7 +68,7 @@ public abstract class Score {
         }
         output += " " + name.toUpperCase();
         
-        scores[5] = output;
+        scores.add(output);
         int[] numScore = new int[6];
         sortScores(numScore, 0, numScore.length);
     }
@@ -103,31 +104,74 @@ public abstract class Score {
     }
     
     public static String getHighScore() {
-        return scores[0];
+        return scores.get(0);
     }
     
     public static String getScore(String searchName) {
         String name = "";
         for (int i = 0; i > 5; i++) {
-            name = scores[i].substring(4);
+            name = scores.get(i).substring(4);
             if (name.equalsIgnoreCase(searchName)) {
-                return scores[i];
+                return scores.get(i);
             }
         }
+        JOptionPane.showMessageDialog(null, "Error: Search Score Out Of Index");
         return "Error: Name Not Found";
     }
     
     public static String getScoreByNum(int value) {
         if (value > 4) {
+            JOptionPane.showMessageDialog(null, "Error: Search Score Out Of Index");
             return "Error: Search Score Out Of Index";
         }else if (value > -1 || value < 5) {
-            return scores[value];
+            return scores.get(value);
         }else {
+            JOptionPane.showMessageDialog(null, "Error: Search Score Out Of Index");
             return "Error: Search Score Out Of Index";
         }
     }
     
-    public static String[] getAllScores() {
+    public static ArrayList getAllScores() {
         return scores;
+    }
+    
+    public static void load () {
+        try {
+            FileReader fr = new FileReader("");
+            BufferedReader br = new BufferedReader(fr);
+            
+            boolean eof = false;
+            String input;
+            int counter = 0;
+            
+            while (!eof) {
+                input = br.readLine();
+                
+                if (input != null) {
+                scores.set(counter, input);
+                counter++;
+                }
+                
+            }
+            br.close();
+        }catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error: Loading Scores IO Error");
+        }
+    }
+    
+    public static void save () {
+        try {
+            FileWriter fw = new FileWriter("");
+            BufferedWriter bw = new BufferedWriter(fw);
+            
+            for (int i = 0; i< scores.size(); i++) {
+                bw.write(scores.get(i));
+                bw.newLine();
+                bw.flush();
+            }
+            bw.close();
+        }catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error: Saving Scores IO Error");
+        }
     }
 }
