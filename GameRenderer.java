@@ -54,15 +54,15 @@ public class GameRenderer {
     }
     
     public void render() {
-        Gdx.app.log("GameRenderer", "render");
-       Gdx.gl.glClearColor(0, 0, 0, 1);
+       // Gdx.app.log("GameRenderer", "render");
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         
-        
+        //Draw the images
         batch.begin();
         batch.disableBlending();
-        batch.draw(background, 0, midPointY - 23, 10, 10);
+        batch.draw(background, 0, 0, 1024, 512);
         batch.draw(golfBall, ball.getX(), ball.getY());
         
         batch.enableBlending();
