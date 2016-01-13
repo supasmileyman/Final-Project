@@ -13,7 +13,21 @@ public class InputHandler implements InputProcessor{
     public InputHandler(Ball ball){
         myBall = ball;
     }
-
+    //Only one is needed. 
+    /**
+     * when the mouse is pressed launch the ball
+     * @param screenX 
+     * @param screenY
+     * @param pointer
+     * @param button
+     * @return true 
+     */
+     @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        myBall.onClick();
+        return true;
+    }
+    //All other methods are unneeded but must be overrided  
     @Override
     public boolean keyDown(int keycode) {
         return false;
@@ -28,13 +42,7 @@ public class InputHandler implements InputProcessor{
     public boolean keyTyped(char character) {
         return false;
     }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        myBall.onClick();
-        return true;
-    }
-
+    
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         return false;
