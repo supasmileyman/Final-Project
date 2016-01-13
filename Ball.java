@@ -103,6 +103,8 @@ public class Ball {
         double vX;
         double vY;
         go = true;
+        //Play the swing sound'
+        AssetLoader.swing.play();
         //Calculate the velocity of the ball
          vX = (Gdx.input.getX() - position.x)* 0.025;
          vY = (Gdx.input.getY() - position.y) *0.015;
