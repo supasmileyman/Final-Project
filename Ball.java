@@ -21,6 +21,7 @@ public class Ball {
     private Vector2 velocity;
     private Vector2 acceleration;
 
+    private int lvl;
     private int score;
     private int width;
     private int height;
@@ -35,6 +36,7 @@ public class Ball {
         velocity = new Vector2(0,0);
         acceleration = new Vector2(0,0);
         score = 0;
+        lvl = 1;
         hitbox = new Circle();
         
     }
@@ -45,20 +47,20 @@ public class Ball {
         //If go is true then go to the nested ifs
         if(go == true){
             //If right is true and the speed is higher than 0.02 accelerate the ball on the x
-            if(right == true && velocity.x > 0.02){
-                acceleration.x = (float)-0.02;
-            }else if(right == false && velocity.x > 0.02){
-                acceleration.x = (float) -0.02;
+            if(right == true && velocity.x > 0.025){
+                acceleration.x = (float)-0.025;
+            }else if(right == false && velocity.x > 0.025){
+                acceleration.x = (float) -0.025;
             }else{
                 //else round it off and stop its acceleration
                 Math.floor(velocity.x);
                 acceleration.x = 0;
             }
             //If down is true and hte speed is higher than 0.02 accelerate the ball on the y
-            if(down == true && velocity.y > 0.02){
-                acceleration.y = (float)-0.02;
-            }else if(down == false && velocity.y > 0.02){
-                acceleration.y = (float) -0.02;
+            if(down == true && velocity.y > 0.015){
+                acceleration.y = (float)-0.015;
+            }else if(down == false && velocity.y > 0.015){
+                acceleration.y = (float) -0.015;
             }else{
                 Math.floor(velocity.y);
                 acceleration.y = 0;
@@ -71,15 +73,15 @@ public class Ball {
         velocity.add(acceleration.cpy());
         
         //Cap the speed of the ball
-        if(velocity.y > 4){
-            velocity.y = 4;
-        }else if(velocity.y < -4){
-            velocity.y = -4;
+        if(velocity.y > 5){
+            velocity.y = 5;
+        }else if(velocity.y < -5){
+            velocity.y = -5;
         }
-        if(velocity.x > 4){
-            velocity.x = 4;
-        }else if(velocity.x < -4){
-            velocity.x = -4;
+        if(velocity.x > 5){
+            velocity.x = 5;
+        }else if(velocity.x < -5){
+            velocity.x = -5;
         }
         //Add to the position
         if(right == true){
@@ -109,8 +111,8 @@ public class Ball {
         //Play the swing sound'
         AssetLoader.swing.play();
         //Calculate the velocity of the ball
-         vX = (Gdx.input.getX() - position.x)* 0.045;
-         vY = (Gdx.input.getY() - position.y) *0.025;
+         vX = (Gdx.input.getX() - position.x)* 0.040;
+         vY = (Gdx.input.getY() - position.y) *0.030;
         
          //if the mouse is to the right of the ball send it right else send it left
          if(position.x < Gdx.input.getX()){
@@ -167,6 +169,13 @@ public class Ball {
     public int getScore(){
         return score;
     }
+    /**
+     * Gets the current lvl
+     * @return the lvl
+     */
+    public int getLvl(){
+        return lvl;
+    }
     
     /**
      * Sets the x position
@@ -202,6 +211,12 @@ public class Ball {
      */
     public void setScore(int s){
         score = s;
+    }
+    /**
+     * Sets the level by adding 1
+     */
+    public void setLvl(){
+        lvl++;
     }
 }
     
