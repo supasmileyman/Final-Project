@@ -3,8 +3,6 @@
  */
 package com.egs.gameworld;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Rectangle;
 import com.egs.gameobjects.Ball;
 
 /**
@@ -28,4 +26,6 @@ public class GameWorld {
     public Ball getBall(){
         return ball;
     }
+    
 }
+
