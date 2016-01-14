@@ -4,7 +4,7 @@
 package com.egs.gameobjects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.egs.golfhelpers.AssetLoader;
@@ -37,14 +37,14 @@ public class Ball {
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
         score = 0;
-        lvl = 1;
+        lvl = 0;
         hitbox = new Circle();
 
     }
 
     /**
      * Update method to update position and velocities Includes hard coded hit
-     * boxes
+     * boxes as well as hard coded level increasing
      */
     public void update() {
         //If go is true then go to the nested ifs
@@ -93,7 +93,7 @@ public class Ball {
         } else {
             position.x -= velocity.x;
         }
-        
+
         //Add to the positiony
         if (down == true) {
             position.y += velocity.y;
@@ -101,9 +101,38 @@ public class Ball {
             position.y -= velocity.y;
         }
 
-        //Could cause error might have to make position x and position y methods
-        hitbox.setPosition(position);
-        System.out.println(velocity);
+        // Level hitboxes
+        if (lvl == 0) {
+            position.x = 2000;
+            position.y = 2000;
+            velocity.x = 0;
+            velocity.y = 0;
+            acceleration.x = 0;
+            acceleration.y = 0;
+            //Load for level 1
+            if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
+                position.x = 40;
+                position.y = 252;
+                lvl = 1;
+            }
+            //Load for high Score
+            if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
+                lvl = 20;
+                
+            }
+            //Load for credits
+             if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
+                lvl = 21;
+            }
+        } else if (lvl == 1) {
+            level1Hit();
+        } else if (lvl == 2) {
+            level2Hit();
+        } else if (lvl == 3) {
+            level3Hit();
+        }else{
+            
+        }
     }
 
     /**
@@ -114,9 +143,11 @@ public class Ball {
         double vY;
         score++;
         go = true;
-        
+
         //Play the swing sound'
-        AssetLoader.swing.play();
+        if (lvl >= 1) {
+            AssetLoader.swing.play(100);
+        }
         //Calculate the velocity of the ball
         vX = (Gdx.input.getX() - position.x) * 0.040;
         vY = (Gdx.input.getY() - position.y) * 0.030;
@@ -242,9 +273,102 @@ public class Ball {
     }
 
     /**
-     * Sets the level by adding 1
+     * Set the level
+     *
+     * @param l level to set to
      */
-    public void setLvl() {
-        lvl++;
+    public void setLvl(int l) {
+        lvl = l;
     }
-}  
+
+    /**
+     * The hit boxes for level1
+     */
+    public void level1Hit() {
+        // Left Wall
+        if (position.x < 32) {
+            right = true;
+        }
+
+        // Top Wall
+        if (position.y < 32) {
+            down = true;
+        }
+
+        // Bottom Wall
+        if (position.y > 448) {
+            down = false;
+        }
+
+        // Right Wall
+        if (position.x > 956) {
+            right = false;
+        }
+
+        // Hole
+        if (position.x > 956 && position.y > 204 && position.y < 236) {
+            AssetLoader.hole.play();
+            //JOptionPane.showMessageDialog(null,"Congrats");
+            position.x = 150;
+            position.y = 400;
+            velocity.x = 0;
+            velocity.y = 0;
+            acceleration.x = 0;
+            acceleration.y = 0;
+            lvl = 2;
+        }
+    }
+
+    /**
+     * The hit boxes for level2
+     */
+    public void level2Hit() {
+        // Left Wall
+        if (position.x < 32) {
+            right = true;
+        }
+
+        // Top Wall
+        if (position.y < 32) {
+            down = true;
+        }
+
+        // Bottom wall under ball spawn
+        if (position.y > 448 && position.x > 32 && position.x < 320) {
+            down = false;
+        }
+
+        //Wall Under Hole
+        if (position.y > 224 && position.x > 320) {
+            down = false;
+        } else // Wall right of ball spawn
+        if (position.y < 448 && position.y > 224 && position.x > 288) {
+            right = false;
+        }
+        // Wall right of hole
+        if (position.x > 960) {
+            right = false;
+        }
+
+        // Hole
+        if (position.x > 956 && position.y > 104 && position.y < 136) {
+            AssetLoader.hole.play(100);
+            //JOptionPane.showMessageDialog(null,"Congrats");
+            position.x = 150;
+            position.y = 400;
+            velocity.x = 0;
+            velocity.y = 0;
+            acceleration.x = 0;
+            acceleration.y = 0;
+            lvl = 3;
+        }
+
+    }
+
+    /**
+     * The hitboxes for level3
+     */
+    public void level3Hit() {
+        //Fill in here
+    }
+}
