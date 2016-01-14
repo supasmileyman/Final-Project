@@ -14,15 +14,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * @author daros0591
  */
 public class AssetLoader {
-    public static Texture bg, ball, ts;
+    public static Texture lvl1, lvl2, lvl3, ball, ts;
     
-    public static TextureRegion backGround;
+    public static TextureRegion backGround1;
+    public static TextureRegion backGround2;
+    public static TextureRegion backGround3;
     public static TextureRegion titlescreen;
     public static TextureRegion golfBall;
     
     public static Sound hole;
     public static Sound swing;
-    
+    /**
+     * Loads all the assets that well be used
+     */
     public static void load(){
     ts = new Texture(Gdx.files.internal("MainMenu.png"));
     ts.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
@@ -30,11 +34,23 @@ public class AssetLoader {
     titlescreen = new TextureRegion(ts);
     titlescreen.flip(true,false);    
         
-    bg = new Texture(Gdx.files.internal("Grass1.png"));
-    bg.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    lvl1 = new Texture(Gdx.files.internal("lvl1.png"));
+    lvl1.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     
-    backGround = new TextureRegion(bg);
-    backGround.flip(true,false);
+    backGround1 = new TextureRegion(lvl1);
+    backGround1.flip(true,false);
+    
+    lvl2 = new Texture(Gdx.files.internal("lvl2.png"));
+    lvl2.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    
+    backGround2 = new TextureRegion(lvl2);
+    backGround2.flip(true,false);
+    
+   // lvl3 = new Texture(Gdx.files.internal("lvl3.png"));
+   // lvl3.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+    
+  //  backGround3 = new TextureRegion(lvl3);
+  //  backGround3.flip(true,false);
     
     ball = new Texture(Gdx.files.internal("ball.png"));
     ball.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
@@ -45,9 +61,13 @@ public class AssetLoader {
     hole = Gdx.audio.newSound(Gdx.files.internal("hole.mp3"));
     swing = Gdx.audio.newSound(Gdx.files.internal("Golf Club Swing.wav"));
     }
-    
+    /**
+     * Disposes of assets no longer needed
+     */
     public static void dispose() {
-        bg.dispose();
+        lvl1.dispose();
+        lvl2.dispose();
+        //lvl3.dispose();
         ball.dispose();
     }
 
