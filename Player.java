@@ -2,6 +2,9 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+        public static FileHandle score, settings;
+    score = Gdx.files.internal("score.png");
+    settings = Gdx.files.internal("settings.txt");
  */
 
 package com.egs.player;
@@ -9,6 +12,7 @@ package com.egs.player;
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
+import com.egs.golfhelpers.*;
 /**
  *
  * @author jiluo5947
@@ -137,8 +141,8 @@ public abstract class Score {
     
     public static void load () {
         try {
-            FileReader fr = new FileReader("");
-            BufferedReader br = new BufferedReader(fr);
+            Reader r = AssetLoader.score.reader();
+            BufferedReader br = new BufferedReader(r);
             
             boolean eof = false;
             String input;
@@ -158,13 +162,12 @@ public abstract class Score {
             JOptionPane.showMessageDialog(null, "Error: Loading Scores IO Error");
         }
     }
-    
     public static void save () {
         try {
-            FileWriter fw = new FileWriter("");
-            BufferedWriter bw = new BufferedWriter(fw);
+            Writer w = AssetLoader.score.writer(false);
+            BufferedWriter bw = new BufferedWriter(w);
             
-            for (int i = 0; i< scores.size(); i++) {
+            for (int i = 0; i < scores.size(); i++) {
                 bw.write(scores.get(i));
                 bw.newLine();
                 bw.flush();
@@ -174,4 +177,5 @@ public abstract class Score {
             JOptionPane.showMessageDialog(null, "Error: Saving Scores IO Error");
         }
     }
+
 }
