@@ -31,6 +31,8 @@ public class GameRenderer {
     private int midPointY;
     private int gameHeight;
 
+    private BitmapFont font;
+
     public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
         myWorld = world;
         this.gameHeight = gameHeight;
@@ -44,6 +46,8 @@ public class GameRenderer {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
 
+        font = new BitmapFont(true);
+
         //Intialize the instance variables
         initializeGameObjects();
         initializeAssets();
@@ -54,12 +58,13 @@ public class GameRenderer {
     }
 
     public void initializeAssets() {
-        startMenu = AssetLoader.ts;
-        background1 = AssetLoader.lvl1;
-        background2 = AssetLoader.lvl2;
-        //  background3 = AssetLoader.lvl3;
-        //credit = AssetLoader.credits;
-        golfBall = AssetLoader.ball;
+        startMenu = AssetLoader.titlescreen;
+        background1 = AssetLoader.backGround1;
+        background2 = AssetLoader.backGround2;
+        //  background3 = AssetLoader.backGround3;
+        //  background3 = AssetLoader.backGround4;
+        credit = AssetLoader.credits;
+        golfBall = AssetLoader.golfBall;
     }
 
     public void render() {
@@ -70,18 +75,24 @@ public class GameRenderer {
         //Draw the images
         //If it is lvl1 display level1 else display the correct level
         batch.begin();
-            batch.disableBlending();
+            batch.enableBlending();
         if (ball.getLvl() == 0){
             batch.draw(startMenu, 0, 0, 1024, 512);
         } else if (ball.getLvl() == 1) {
             batch.draw(background1, 0, 0, 1024, 512);
             batch.draw(golfBall, ball.getX(), ball.getY());
+            font.draw(batch, "Hits: " + ball.getScore(), 900, 500);
+            font.draw(batch, "Level: " + ball.getLvl(), 800, 500);
         } else if (ball.getLvl() == 2) {
             batch.draw(background2, 0, 0, 1024, 512);
             batch.draw(golfBall, ball.getX(), ball.getY());
+            font.draw(batch, "Hits: " + ball.getScore(), 900, 500);
+            font.draw(batch, "Level: " + ball.getLvl(), 800, 500);
         } else if (ball.getLvl() == 3) {
             //  batch.draw(background3, 0, 0, 1024, 512);
             //  batch.draw(golfBall, ball.getX(), ball.getY());
+           // font.draw(batch, "Hits: " + ball.getScore(), 900, 500);
+          //  font.draw(batch, "Level: " + ball.getLvl(), 800, 500);
         }else if (ball.getLvl() == 20){
             ArrayList<String> top = new ArrayList();
             //Score.save();
@@ -94,9 +105,10 @@ public class GameRenderer {
                     "\n5: " + top.get(4));
             ball.setLvl(0);
         }else if (ball.getLvl() == 21){
-         //Show the credits   
+        batch.draw(credit, 0, 0, 1024, 512);
+        font.draw(batch, "Ji Lin", 200, 350);
         }
-        batch.enableBlending();
+
         batch.end();
     }
 }
