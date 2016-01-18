@@ -13,7 +13,12 @@ public class Golf extends Game {
     public void create() {
         Gdx.app.log("Eddie's Golf Simulator", "created");
         AssetLoader.load();
-        AssetLoader.theme.play(1);
+        int rand = (int)(Math.random()*2)+1;
+        if(rand == 1){
+        AssetLoader.theme1.play((float)0.4);
+        }else{
+        AssetLoader.theme2.play((float)0.4);
+        }
         //Display introscreen
         setScreen(new GameScreen());
     }
