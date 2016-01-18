@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.egs.golfhelpers.AssetLoader;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -117,12 +118,12 @@ public class Ball {
             }
             //Load for high Score
             if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
-                lvl = 20;
-                
+                lvl = 10;
+
             }
             //Load for credits
-             if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
-                lvl = 21;
+            if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
+                lvl = 11;
             }
         } else if (lvl == 1) {
             level1Hit();
@@ -130,8 +131,8 @@ public class Ball {
             level2Hit();
         } else if (lvl == 3) {
             level3Hit();
-        }else{
-            
+        } else if (lvl == 11 && (Gdx.input.isKeyPressed(Keys.ENTER))) {
+            lvl = 0;
         }
     }
 
@@ -144,33 +145,32 @@ public class Ball {
         score++;
         go = true;
 
-        //Play the swing sound'
-        if (lvl >= 1) {
+        //Play the swing sound
+        if (lvl > 0 && lvl < 10) {
             AssetLoader.swing.play(100);
-        }
-        //Calculate the velocity of the ball
-        vX = (Gdx.input.getX() - position.x) * 0.040;
-        vY = (Gdx.input.getY() - position.y) * 0.030;
+            //Calculate the velocity of the ball
+            vX = (Gdx.input.getX() - position.x) * 0.040;
+            vY = (Gdx.input.getY() - position.y) * 0.030;
 
-        //if the mouse is to the right of the ball send it right else send it left
-        if (position.x < Gdx.input.getX()) {
-            right = true;
-        } else {
-            right = false;
-            vX = vX * -1;
-        }
+            //if the mouse is to the right of the ball send it right else send it left
+            if (position.x < Gdx.input.getX()) {
+                right = true;
+            } else {
+                right = false;
+                vX = vX * -1;
+            }
 
-        //If the mouse is below the ball send it down else send it up
-        if (position.y < Gdx.input.getY()) {
-            down = true;
-        } else {
-            down = false;
-            vY = vY * -1;
+            //If the mouse is below the ball send it down else send it up
+            if (position.y < Gdx.input.getY()) {
+                down = true;
+            } else {
+                down = false;
+                vY = vY * -1;
+            }
+            //Set the velocities 
+            velocity.x = (float) vX;
+            velocity.y = (float) vY;
         }
-        //Set the velocities 
-        velocity.x = (float) vX;
-        velocity.y = (float) vY;
-
     }
 
     /**
@@ -353,9 +353,8 @@ public class Ball {
         // Hole
         if (position.x > 956 && position.y > 104 && position.y < 136) {
             AssetLoader.hole.play(100);
-            //JOptionPane.showMessageDialog(null,"Congrats");
-            position.x = 150;
-            position.y = 400;
+            position.x = 80;
+            position.y = 64;
             velocity.x = 0;
             velocity.y = 0;
             acceleration.x = 0;
@@ -366,9 +365,80 @@ public class Ball {
     }
 
     /**
-     * The hitboxes for level3
+     * The hitboxes for level 3
      */
     public void level3Hit() {
-        //Fill in here
+        // Outer Boundries
+        if (position.x < 32) {
+            right = true;
+        }
+        if (position.y < 32) {
+            down = true;
+        }
+        if (position.y > 448) {
+            down = false;
+        }
+        if (position.x > 960) {
+            right = false;
+        }
+
+        // First Obstacle
+        // Bottom
+        if (position.x > 135 && position.x < 188 && position.y < 352) {
+            position.y = 353;
+            down = true;
+        }
+        // Left then right
+        if (position.x > 128 && position.x < 159 && position.y <= 352) {
+            right = false;
+        } else if (position.x < 192 && position.x > 160 && position.y <= 352) {
+            right = true;
+        }
+
+        // 2nd Obstacle
+        // Top
+        if (position.x > 288 && position.x < 352 && position.y >= 128 && position.y <= 131) {
+            down = false;
+        }
+
+        // Left then right
+        if (position.x > 288 && position.x < 295 && position.y >= 128) {
+            right = false;
+        } else if (position.x > 296 && position.x < 352 && position.y >= 130) {
+            right = true;
+        }
+
+        // Middle Box
+        //Left
+        if (position.x > 448  && position.x < 455 && position.y > 128 && position.y < 352) {
+            right = false;
+        }
+        
+        //Top
+        if (position.x > 448 && position.x < 866 && position.y > 128 && position.y < 135){
+            down = false;
+        }
+        
+        //Right 
+        if (position.y > 128 && position.y < 352 && position.x > 859 && position.x < 866){
+            right = true;
+        }
+        
+        //Bottom
+        if (position.y < 352 && position.y > 345 && position.x > 448 && position.x < 866){
+            down = true;
+        }
+        
+        // Hole
+        if (position.x <= 960 && position.x >= 928 && position.y > 448){
+            AssetLoader.hole.play(100);
+            position.x = 80;
+            position.y = 64;
+            velocity.x = 0;
+            velocity.y = 0;
+            acceleration.x = 0;
+            acceleration.y = 0;
+            //lvl = 4;
+        }
     }
 }
