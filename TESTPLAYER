@@ -46,44 +46,49 @@ public abstract class DrawSquare {
         
         scores.add(output);
         int[] numScore = new int[scores.size()];
-        String test;
         for (int i = 0; i < scores.size(); i++) {
-            test = scores.get(i).substring(4);
-            System.out.println(test);
-            numScore[i] = Integer.parseInt(test);
+            numScore[i] = Integer.parseInt(scores.get(i).substring(4));
         }
-        sortScores(numScore, 0, numScore.length - 1);
-        System.out.println(numScore[0]);
+        sort(scores, 0, scores.size() - 1);
     }
     
-    public static void sortScores(int[] a, int l, int h) {
+    public static void sort(ArrayList<String> b, int l, int h) {
+        int[] a = new int[b.size()];
+        for (int i = 0; i < b.size(); i++) {
+            a[i] = Integer.parseInt(b.get(i).substring(4));
+            System.out.println(a[i]);
+        }
         if (h > l) {
             int i = l;
             int j = h;
             int pivot = a[l + (h - l) / 2];
             while (i <= j) {
 
-                while (a[i] > pivot) {
+                while (a[i] < pivot) {
                     i++;
                 }
-                while (a[j] < pivot) {
+                while (a[j] > pivot) {
                     j--;
                 }
                 if (i <= j) {
-                    swap(a, i, j);
+                    swap(a, i, j, b);
                     i++;
                     j--;
                 }
             }
-            sortScores(a, l, j);
-            sortScores(a, i, h);
+            sort(b, l, j);
+            sort(b, i, h);
         }
     }
     
-    public static void swap(int[] a, int b, int c) {
+    public static void swap(int[] a, int b, int c, ArrayList<String> d) {
         int t = a[b];
         a[b] = a[c];
         a[c] = t;
+        
+        String s = d.get(b);
+        d.set(b, d.get(c));
+        d.set(c, s);
     }
     
     public static String getHighScore() {
@@ -119,20 +124,21 @@ public abstract class DrawSquare {
     }
     
     public static void load () {
+        scores.clear();
         try {
             FileReader r = new FileReader("src\\drawsquare\\newfile.txt");
             BufferedReader br = new BufferedReader(r);
             
             boolean eof = false;
             String input;
-            int counter = 0;
             
             while (!eof) {
                 input = br.readLine();
                 
                 if (input != null) {
-                scores.set(counter, input);
-                counter++;
+                scores.add(input);
+                }else {
+                    eof = true;
                 }
                 
             }
