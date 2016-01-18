@@ -26,7 +26,8 @@ public class AssetLoader {
     
     public static Sound hole;
     public static Sound swing;
-    public static Sound theme;
+    public static Sound theme1;
+    public static Sound theme2;
     
     public static FileHandle score;
     /**
@@ -73,7 +74,8 @@ public class AssetLoader {
     
     hole = Gdx.audio.newSound(Gdx.files.internal("hole.mp3"));
     swing = Gdx.audio.newSound(Gdx.files.internal("Golf Club Swing.wav"));
-    theme = Gdx.audio.newSound(Gdx.files.internal("oarfish.mp3"));
+    theme1 = Gdx.audio.newSound(Gdx.files.internal("Modigs - OARFISH_228090209_soundcloud.mp3"));
+    theme2 = Gdx.audio.newSound(Gdx.files.internal("Modigs - Battle of minds_148420102_soundcloud.mp3"));
     }
     /**
      * Disposes of assets no longer needed
