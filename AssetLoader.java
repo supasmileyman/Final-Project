@@ -5,6 +5,7 @@
 package com.egs.golfhelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -26,6 +27,8 @@ public class AssetLoader {
     public static Sound hole;
     public static Sound swing;
     public static Sound theme;
+    
+    public static FileHandle score;
     /**
      * Loads all the assets that well be used
      */
@@ -48,6 +51,8 @@ public class AssetLoader {
     backGround2 = new TextureRegion(lvl2);
     backGround2.flip(true,false);
     
+    score = Gdx.files.internal("scores.txt");
+    
    // lvl3 = new Texture(Gdx.files.internal("lvl3.png"));
    // lvl3.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
     
@@ -68,7 +73,7 @@ public class AssetLoader {
     
     hole = Gdx.audio.newSound(Gdx.files.internal("hole.mp3"));
     swing = Gdx.audio.newSound(Gdx.files.internal("Golf Club Swing.wav"));
-    theme = Gdx.audio.newSound(Gdx.files.internal("Modigs - OARFISH_228090209_soundcloud.mp3"));
+    theme = Gdx.audio.newSound(Gdx.files.internal("oarfish.mp3"));
     }
     /**
      * Disposes of assets no longer needed
