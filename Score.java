@@ -1,21 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.egs.player;
 
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
+import com.egs.golfhelpers.AssetLoader;
 /**
  *
  * @author jiluo5947
  */
 public abstract class Score {
 
-    public static ArrayList<String> scores;
+    public static ArrayList<String> scores = new ArrayList();
     
     public static void setHighScore(int score) {
         boolean lmtchar = false;
@@ -33,14 +28,6 @@ public abstract class Score {
                 lmtchar = true;
                 JOptionPane.showMessageDialog(null, "Illegal Name! Name must be 3 characters.");
             }
-            //Check if any illegal characters used (alphanumeric only)
-            for (int i = 0; i < 4; i++) {
-                testChar = name.charAt(i);
-                if (((int) testChar < 65 || (int) testChar > 90) || ((int) testChar < 48 || (int) testChar > 57) ) { // less than 48 g than 57
-                    illchar = true;
-                    JOptionPane.showMessageDialog(null, "Illegal Character! Name must be alphanumeric (A-Z, 0-9).");
-                }
-            }
             //If either illegal condition is met, reloop
             if (lmtchar == true || illchar == true) {
                 cmplte = false;
@@ -55,52 +42,54 @@ public abstract class Score {
                 }
             }
         }
-        
-        if (score > 9) {
-            output = "00" + score;
-        }else if (score < 100 || score > 9){
-            output = "0" + score;
-        }else if (score < 1000 || score > 100) {
-            output = "" + score;
-        }else if (score < 0 || score > 999) {
-            output = "" + 0;
-            JOptionPane.showMessageDialog(null, "Illegal score! Score reset.");
-        }
-        output += " " + name.toUpperCase();
+
+        output = name + " " + score;
         
         scores.add(output);
-        int[] numScore = new int[6];
-        sortScores(numScore, 0, numScore.length);
+        int[] numScore = new int[scores.size()];
+        for (int i = 0; i < scores.size(); i++) {
+            numScore[i] = Integer.parseInt(scores.get(i).substring(4));
+        }
+        sort(scores, 0, scores.size() - 1);
     }
     
-    public static void sortScores(int[] a, int l, int h) {
+    public static void sort(ArrayList<String> b, int l, int h) {
+        int[] a = new int[b.size()];
+        for (int i = 0; i < b.size(); i++) {
+            a[i] = Integer.parseInt(b.get(i).substring(4));
+            System.out.println(a[i]);
+        }
         if (h > l) {
             int i = l;
             int j = h;
             int pivot = a[l + (h - l) / 2];
             while (i <= j) {
 
-                while (a[i] > pivot) {
+                while (a[i] < pivot) {
                     i++;
                 }
-                while (a[j] < pivot) {
+                while (a[j] > pivot) {
                     j--;
                 }
                 if (i <= j) {
-                    swap(a, i, j);
+                    swap(a, i, j, b);
                     i++;
                     j--;
                 }
             }
-            sortScores(a, l, j);
-            sortScores(a, i, h);
+            sort(b, l, j);
+            sort(b, i, h);
         }
     }
     
-    public static void swap(int[] a, int b, int c) {
+    public static void swap(int[] a, int b, int c, ArrayList<String> d) {
         int t = a[b];
         a[b] = a[c];
         a[c] = t;
+        
+        String s = d.get(b);
+        d.set(b, d.get(c));
+        d.set(c, s);
     }
     
     public static String getHighScore() {
@@ -109,7 +98,7 @@ public abstract class Score {
     
     public static String getScore(String searchName) {
         String name = "";
-        for (int i = 0; i > 5; i++) {
+        for (int i = 0; i < 5; i++) {
             name = scores.get(i).substring(4);
             if (name.equalsIgnoreCase(searchName)) {
                 return scores.get(i);
@@ -132,24 +121,26 @@ public abstract class Score {
     }
     
     public static ArrayList getAllScores() {
+        sort(scores, 0, scores.size() - 1);
         return scores;
     }
     
     public static void load () {
+        scores.clear();
         try {
-            FileReader fr = new FileReader("");
-            BufferedReader br = new BufferedReader(fr);
+            Reader r = AssetLoader.score.reader();
+            BufferedReader br = new BufferedReader(r);
             
             boolean eof = false;
             String input;
-            int counter = 0;
             
             while (!eof) {
                 input = br.readLine();
                 
                 if (input != null) {
-                scores.set(counter, input);
-                counter++;
+                scores.add(input);
+                }else {
+                    eof = true;
                 }
                 
             }
@@ -158,13 +149,12 @@ public abstract class Score {
             JOptionPane.showMessageDialog(null, "Error: Loading Scores IO Error");
         }
     }
-    
     public static void save () {
         try {
-            FileWriter fw = new FileWriter("");
-            BufferedWriter bw = new BufferedWriter(fw);
+            Writer w = AssetLoader.score.writer(false);
+            BufferedWriter bw = new BufferedWriter(w);
             
-            for (int i = 0; i< scores.size(); i++) {
+            for (int i = 0; i < scores.size(); i++) {
                 bw.write(scores.get(i));
                 bw.newLine();
                 bw.flush();
@@ -172,6 +162,8 @@ public abstract class Score {
             bw.close();
         }catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: Saving Scores IO Error");
+            System.out.println(e);
         }
     }
+
 }
