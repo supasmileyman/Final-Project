@@ -11,7 +11,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.egs.gameobjects.Ball;
 import com.egs.golfhelpers.AssetLoader;
-
+import com.egs.player.Score;
+import java.util.ArrayList;
+import javax.swing.*;
 
 public class GameRenderer {
 
@@ -67,27 +69,30 @@ public class GameRenderer {
         
         //Draw the images
         //If it is lvl1 display level1 else display the correct level
-        if (ball.getLvl() == 0){
-            batch.begin();
+        batch.begin();
             batch.disableBlending();
+        if (ball.getLvl() == 0){
             batch.draw(startMenu, 0, 0, 1024, 512);
         } else if (ball.getLvl() == 1) {
-            batch.begin();
-            batch.disableBlending();
             batch.draw(background1, 0, 0, 1024, 512);
             batch.draw(golfBall, ball.getX(), ball.getY());
         } else if (ball.getLvl() == 2) {
-            batch.begin();
-            batch.disableBlending();
             batch.draw(background2, 0, 0, 1024, 512);
             batch.draw(golfBall, ball.getX(), ball.getY());
         } else if (ball.getLvl() == 3) {
-          //  batch.begin();
-            //  batch.disableBlending();
             //  batch.draw(background3, 0, 0, 1024, 512);
             //  batch.draw(golfBall, ball.getX(), ball.getY());
         }else if (ball.getLvl() == 20){
-         //do the high scores
+            ArrayList<String> top = new ArrayList();
+            //Score.save();
+            Score.load();
+            top = Score.getAllScores();
+            JOptionPane.showMessageDialog(null, "Top Scores in Eddie's Golf Simulator:\nName\tScore\n1: " + top.get(0) +
+                    "\n2: " + top.get(1) +
+                    "\n3: " + top.get(2) +
+                    "\n4: " + top.get(3) +
+                    "\n5: " + top.get(4));
+            ball.setLvl(0);
         }else if (ball.getLvl() == 21){
          //Show the credits   
         }
