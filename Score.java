@@ -92,6 +92,19 @@ public abstract class Score {
         d.set(c, s);
     }
     
+    public static void searchScores() {
+        String in = JOptionPane.showInputDialog(null, "Enter The 3-Digit Username You Would Like To Search.", "AAA");
+        String output;
+        int x;
+        for (int i = 0; i < scores.size(); i++) {
+            if (in.equalsIgnoreCase(scores.get(i).substring(0,3) {
+               x++;
+               output += "\nScore: " + scores.get(i).substring(4);
+            }
+        }
+        JOptionPane.showMessgaeDialog(null, "Player " + in + " was found " + x + " times. Scores listed below:" + output);
+    }
+    
     public static String getHighScore() {
         return scores.get(0);
     }
