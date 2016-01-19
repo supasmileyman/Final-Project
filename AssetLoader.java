@@ -52,7 +52,7 @@ public class AssetLoader {
     backGround2 = new TextureRegion(lvl2);
     backGround2.flip(true,false);
     
-    score = Gdx.files.internal("scores.txt");
+    score = Gdx.files.local("scores.txt");
     
    // lvl3 = new Texture(Gdx.files.internal("lvl3.png"));
    // lvl3.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
