@@ -100,6 +100,9 @@ public abstract class Score {
                x++;
                output += "\nScore: " + scores.get(i).substring(4);
             }
+            if (x == 0) {
+                output = "\nNo results found."
+            }
         }
         JOptionPane.showMessgaeDialog(null, "Player " + in + " was found " + x + " times. Scores listed below:" + output);
     }
