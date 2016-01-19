@@ -94,16 +94,26 @@ public class GameRenderer {
            // font.draw(batch, "Hits: " + ball.getScore(), 900, 500);
           //  font.draw(batch, "Level: " + ball.getLvl(), 800, 500);
         }else if (ball.getLvl() == 20){
-            ArrayList<String> top = new ArrayList();
-            //Score.save();
-            Score.load();
-            top = Score.getAllScores();
-            JOptionPane.showMessageDialog(null, "Top Scores in Eddie's Golf Simulator:\nName\tScore\n1: " + top.get(0) +
+            String choice = JOptionPane.showInputDialog(null, "Enter 1 to see top 5 scores, 2 to search highscores, 3 to return to main menu.", "1");
+            if (choice.equals("1")) {
+                ArrayList<String> top = new ArrayList();
+                Score.load();
+                top = Score.getAllScores();
+                JOptionPane.showMessageDialog(null, "Top Scores in Eddie's Golf Simulator:\nName\tScore\n1: " + top.get(0) +
                     "\n2: " + top.get(1) +
                     "\n3: " + top.get(2) +
                     "\n4: " + top.get(3) +
                     "\n5: " + top.get(4));
-            ball.setLvl(0);
+                ball.setLvl(0);
+            }else if (choice.equals("2")) {
+                Score.searchScores();
+                ball.setLvl(0);
+            }else if (choice.equals("3") {
+                ball.setLvl(0);
+            }else {
+                JOptionPane.showMessageDialog(null, "Error! Returning to main menu.");
+                ball.setLvl(0);
+            }
         }else if (ball.getLvl() == 21){
         batch.draw(credit, 0, 0, 1024, 512);
         font.draw(batch, "Ji Lin", 200, 350);
