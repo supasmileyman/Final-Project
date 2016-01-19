@@ -57,7 +57,6 @@ public abstract class Score {
         int[] a = new int[b.size()];
         for (int i = 0; i < b.size(); i++) {
             a[i] = Integer.parseInt(b.get(i).substring(4));
-            System.out.println(a[i]);
         }
         if (h > l) {
             int i = l;
