@@ -9,29 +9,31 @@ import com.egs.golfhelpers.AssetLoader;
  * @author jiluo5947
  */
 public abstract class Score {
-
+    //Global arraylist for scoring all scores
     public static ArrayList<String> scores = new ArrayList();
     
+    /**
+     * Allows the user to set a new score in the global arraylist, checks if it meets the 3 character standard.
+     * The score is then added to the global scores list, and sorts the list.
+     * @param score Score the user had in the course
+     */
     public static void setHighScore(int score) {
         boolean lmtchar = false;
-        boolean illchar = false;
         boolean cmplte = false;
         String name = "", output = "", confirm;
-        char testChar;
         while (!cmplte) {
             lmtchar = false;
-            illchar = false;
             name = JOptionPane.showInputDialog(null, "Enter Your Name (3 Characters)", "AAA");
-            name.toUpperCase();
-            //Check if name within limits (3 characters)"
+            name.toUpperCase(); //Put all characters in uppercase
+            //Check if name within limits (3 characters)
             if (name.length() != 3) {
                 lmtchar = true;
                 JOptionPane.showMessageDialog(null, "Illegal Name! Name must be 3 characters.");
             }
-            //If either illegal condition is met, reloop
-            if (lmtchar == true || illchar == true) {
+            //If the illegal character condition is met, reloop
+            if (lmtchar == true) {
                 cmplte = false;
-            }else {
+            }else { //Otherwise, allow user to get out of loop
                 cmplte = true;
                 //Confirm name
                 confirm = JOptionPane.showInputDialog(null, "Confirm name: " + name + ". Enter NO to cancel selection, anything else to continue.", "YES");
@@ -42,22 +44,26 @@ public abstract class Score {
                 }
             }
         }
-
+        //Standardize output
         output = name + " " + score;
         
+        //Add output to the global scores arraylist
         scores.add(output);
-        int[] numScore = new int[scores.size()];
-        for (int i = 0; i < scores.size(); i++) {
-            numScore[i] = Integer.parseInt(scores.get(i).substring(4));
-        }
+        //Sort the scores
         sort(scores, 0, scores.size() - 1);
     }
     
+    /**
+     * Uses a quiksort algorithm to sort all the scores.
+     * @param b Arraylist that the algorithm will sort
+     * @param l Lower index to search from
+     * @param h Higher index to search from
+     */
     public static void sort(ArrayList<String> b, int l, int h) {
         int[] a = new int[b.size()];
         for (int i = 0; i < b.size(); i++) {
             a[i] = Integer.parseInt(b.get(i).substring(4));
-        }
+        } //Converts the arraylist into an array of just scores, removes names
         if (h > l) {
             int i = l;
             int j = h;
@@ -81,6 +87,13 @@ public abstract class Score {
         }
     }
     
+    /**
+     * Swap method for quiksort algorithm.
+     * @param a Int array to swap
+     * @param b First index to swap
+     * @param c Second index to swap
+     * @param d ArrayList to swap
+     */
     public static void swap(int[] a, int b, int c, ArrayList<String> d) {
         int t = a[b];
         a[b] = a[c];
@@ -91,55 +104,52 @@ public abstract class Score {
         d.set(c, s);
     }
     
+    /**
+     * Searches through all the scores to find any scores a user has left.
+     * @param score Score the user had in the course
+     */
     public static void searchScores() {
+        //Get name to search for
         String in = JOptionPane.showInputDialog(null, "Enter The 3-Digit Username You Would Like To Search.", "AAA");
         String output;
         int x;
+        //Linear search through all score entries
         for (int i = 0; i < scores.size(); i++) {
-            if (in.equalsIgnoreCase(scores.get(i).substring(0,3) {
+            if (in.equalsIgnoreCase(scores.get(i).substring(0,3))) {
                x++;
                output += "\nScore: " + scores.get(i).substring(4);
+               //Add all scores if user was found
             }
             if (x == 0) {
+                //Output no results found string if user could not be found
                 output = "\nNo results found."
             }
         }
-        JOptionPane.showMessgaeDialog(null, "Player " + in + " was found " + x + " times. Scores listed below:" + output);
+        //Output to user
+        JOptionPane.showMessageDialog(null, "Player " + in + " was found " + x + " times. Scores listed below:" + output);
     }
     
+    /**
+     * Sorts all entries, then return lowest score.
+     * @return Best score in the game
+     */
     public static String getHighScore() {
+        sort(scores, 0, scores.size() - 1);
         return scores.get(0);
     }
     
-    public static String getScore(String searchName) {
-        String name = "";
-        for (int i = 0; i < 5; i++) {
-            name = scores.get(i).substring(4);
-            if (name.equalsIgnoreCase(searchName)) {
-                return scores.get(i);
-            }
-        }
-        JOptionPane.showMessageDialog(null, "Error: Search Score Out Of Index");
-        return "Error: Name Not Found";
-    }
-    
-    public static String getScoreByNum(int value) {
-        if (value > 4) {
-            JOptionPane.showMessageDialog(null, "Error: Search Score Out Of Index");
-            return "Error: Search Score Out Of Index";
-        }else if (value > -1 || value < 5) {
-            return scores.get(value);
-        }else {
-            JOptionPane.showMessageDialog(null, "Error: Search Score Out Of Index");
-            return "Error: Search Score Out Of Index";
-        }
-    }
-    
+    /**
+     * Sorts all entries, then return all scores.
+     * @return ArrayList containing all names and their respective scores.
+     */
     public static ArrayList getAllScores() {
         sort(scores, 0, scores.size() - 1);
         return scores;
     }
     
+    /**
+     * Loads all scores containined in the scores file.
+     */
     public static void load () {
         scores.clear();
         try {
@@ -164,7 +174,12 @@ public abstract class Score {
             JOptionPane.showMessageDialog(null, "Error: Loading Scores IO Error");
         }
     }
+    
+    /**
+     * Saves all scores currently contained in the scores ArrayList.
+     */
     public static void save () {
+        load();
         try {
             Writer w = AssetLoader.score.writer(false);
             BufferedWriter bw = new BufferedWriter(w);
